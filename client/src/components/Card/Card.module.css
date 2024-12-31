@@ -1,0 +1,7 @@
+@import '../../assets/colors.css';
+
+.card {
+  border-radius: 5px;
+  border: 2px solid var(--color-dark);
+  padding: 5px;
+}

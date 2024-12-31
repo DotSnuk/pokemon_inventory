@@ -1,0 +1,5 @@
+@import '../../assets/colors.css';
+
+.container {
+  display: flex;
+}
