@@ -12,7 +12,37 @@ async function getPokemons() {
 }
 
 async function getPokemon(name) {
-  const results = await fetch(`${API_URL}/pokemon/${name}`, {
+  const urlSuffix = '/pokemon/';
+  return getResource(name, urlSuffix);
+}
+
+async function getType(name) {
+  const urlSuffix = '/type/';
+  return getResource(name, urlSuffix);
+}
+
+async function getMove(name) {
+  const urlSuffix = '/move/';
+  return getResource(name, urlSuffix);
+}
+
+async function getAllPokemon() {
+  const urlSuffix = '/pokemon/?limit=100';
+  return getAllData(urlSuffix);
+}
+
+async function getAllTypes() {
+  const urlSuffix = '/type/?limit=30';
+  return getAllData(urlSuffix);
+}
+
+async function getAllMoves() {
+  const urlSuffix = '/move/?limit=100';
+  return getAllData(urlSuffix);
+}
+
+async function getResource(name, urlSuffix) {
+  const results = await fetch(`${API_URL}${urlSuffix}${name}`, {
     mode: 'cors',
   }).then(res => {
     if (!res.ok) throw new Error('server error');
@@ -21,23 +51,13 @@ async function getPokemon(name) {
   return results;
 }
 
-async function getAllPokemon() {
-  const urlQuery = '/pokemon/?limit=100';
-  return getAllData(urlQuery);
-}
-
-async function getAllTypes() {
-  const urlQuery = '/type/?limit=30';
-  return getAllData(urlQuery);
-}
-
-async function getAllData(urlQuery) {
+async function getAllData(urlSuffix) {
   const data = [];
   let response = null;
   let next = null;
   do {
     response === null
-      ? (response = await fetch(`${API_URL}${urlQuery}`, {
+      ? (response = await fetch(`${API_URL}${urlSuffix}`, {
           mode: 'cors',
         }).then(res => {
           if (!res.ok) throw new Error('Server error');
@@ -61,4 +81,12 @@ async function getAllData(urlQuery) {
 //   return response.results;
 // }
 
-module.exports = { getPokemons, getPokemon, getAllPokemon, getAllTypes };
+module.exports = {
+  getPokemons,
+  getPokemon,
+  getAllPokemon,
+  getAllTypes,
+  getAllMoves,
+  getType,
+  getMove,
+};
