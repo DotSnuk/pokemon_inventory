@@ -3,9 +3,12 @@ require('dotenv').config();
 const queries = require('./queries');
 const pokeapi = require('../api/poke');
 const utility = require('../utility/utilities');
+const ALL_POKEMON = pokeapi.getAllPokemon();
+const ALL_TYPES = pokeapi.getAllTypes();
+const ALL_MOVES = pokeapi.getAllMoves();
 
-async function populateWithPokemon(pokemons) {
-  pokemons.map(async pokemon => {
+async function populateWithPokemon() {
+  ALL_POKEMON.map(async pokemon => {
     const dataFromApi = await pokeapi.getPokemon(pokemon.name);
     const data = {
       id: dataFromApi.id,
@@ -17,19 +20,18 @@ async function populateWithPokemon(pokemons) {
   });
 }
 
-async function populateWithTypes(types) {
-  types.map(async type => {
+async function populateWithTypes() {
+  ALL_TYPES.map(async type => {
     const dataFromApi = await pokeapi.getType(type.name);
     const data = { id: dataFromApi.id, name: dataFromApi.name };
     queries.insertType(data);
   });
 }
 
-async function populateWithMoves(moves) {
-  moves.map(async move => {
+async function populateWithMoves() {
+  ALL_MOVES.map(async move => {
     const dataFromApi = await pokeapi.getMove(move.name);
     const type_id = parseInt(utility.getLastPartOfURL(dataFromApi.type.url));
-    // id, name, accuracy, effect, power, pp, priority, type_id
     const effect =
       dataFromApi.effect_entries.length > 0
         ? dataFromApi.effect_entries[0].short_effect
@@ -54,11 +56,12 @@ async function comparePokemonsToApi() {
   console.log('Checking database for pokemon');
   const db = await queries.getAllPokemon();
   console.log('Checking external API');
-  const api = await pokeapi.getAllPokemon();
-  console.log(`Pokemon in DB: ${db.length}. Pokemon in API: ${api.length}`);
-  if (db.length < api.length) {
+  console.log(
+    `Pokemon in DB: ${db.length}. Pokemon in API: ${ALL_POKEMON.length}`,
+  );
+  if (db.length < ALL_POKEMON.length) {
     console.log(`Adding pokemon from API`);
-    return populateWithPokemon(api);
+    return populateWithPokemon();
   }
 }
 
@@ -66,11 +69,10 @@ async function compareTypesToApi() {
   console.log('Checking database for types');
   const db = await queries.getAllTypes();
   console.log('Checking external API');
-  const api = await pokeapi.getAllTypes();
-  console.log(`Types in DB: ${db.length}. Types in API: ${api.length}`);
-  if (db.length < api.length) {
+  console.log(`Types in DB: ${db.length}. Types in API: ${ALL_TYPES.length}`);
+  if (db.length < ALL_TYPES.length) {
     console.log('Adding types to DB');
-    populateWithTypes(api);
+    populateWithTypes();
   }
 }
 
@@ -78,11 +80,10 @@ async function compareMovesToApi() {
   console.log('Checking database for moves');
   const db = await queries.getAllMoves();
   console.log('Checking external API');
-  const api = await pokeapi.getAllMoves();
-  console.log(`Moves in DB: ${db.length}. Moves in API: ${api.length}`);
-  if (db.length < api.length) {
+  console.log(`Moves in DB: ${db.length}. Moves in API: ${ALL_MOVES.length}`);
+  if (db.length < ALL_MOVES.length) {
     console.log('Adding moves to DB');
-    populateWithMoves(api);
+    populateWithMoves();
   }
 }
 
