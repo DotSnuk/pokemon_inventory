@@ -15,6 +15,7 @@ async function populateWithPokemon(pokemons) {
     };
     queries.insertPokemon(data);
     populateWithPokemonType(dataFromApi);
+    populateWithPokemonMoves(dataFromApi);
   });
 }
 
@@ -53,8 +54,18 @@ async function populateWithPokemonType(pokemon) {
   const types = pokemon.types.map(type =>
     parseInt(utility.getLastPartOfURL(type.type.url)),
   );
-  types.forEach(type =>
-    queries.insertPokemonType({ pokemon_id, type_id: type }),
+  await Promise.all(
+    types.map(type => queries.insertPokemonType({ pokemon_id, type_id: type })),
+  );
+}
+
+async function populateWithPokemonMoves(pokemon) {
+  const pokemon_id = pokemon.id;
+  const moves = pokemon.moves.map(move =>
+    parseInt(utility.getLastPartOfURL(move.move.url)),
+  );
+  await Promise.all(
+    moves.map(move => queries.insertPokemonMove({ pokemon_id, move_id: move })),
   );
 }
 

@@ -48,11 +48,18 @@ async function insertMove(data) {
 }
 
 async function insertPokemonType(data) {
-  console.log(data);
   const { pokemon_id, type_id } = data;
   await pool.query(
     `INSERT INTO pokemon_types (pokemon_id, type_id) VALUES ($1, $2) ON CONFLICT (pokemon_id, type_id) DO NOTHING`,
     [pokemon_id, type_id],
+  );
+}
+
+async function insertPokemonMove(data) {
+  const { pokemon_id, move_id } = data;
+  await pool.query(
+    `INSERT INTO pokemon_moves (pokemon_id, move_id) VALUES ($1, $2) ON CONFLICT (pokemon_id, move_id) DO NOTHING`,
+    [pokemon_id, move_id],
   );
 }
 
@@ -71,4 +78,5 @@ module.exports = {
   insertType,
   insertMove,
   insertPokemonType,
+  insertPokemonMove,
 };
