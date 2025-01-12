@@ -1,10 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { getTrainers } from '../../api/backend';
 import Card from '../Card/Card';
 import styles from './Trainers.module.css';
+import { useActiveTrainer } from '../TrainerContext/TrainerContextProvider';
 
 export default function Trainer() {
   const [trainers, setTrainers] = useState([]);
+  const activeTrainer = useActiveTrainer();
+  console.log(activeTrainer);
 
   useEffect(() => {
     async function handleGetTrainers() {

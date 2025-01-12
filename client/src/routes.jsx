@@ -10,10 +10,6 @@ export const routes = [
     children: [
       {
         index: true,
-        element: <TextComponent />,
-      },
-      {
-        path: 'trainers',
         element: <Trainers />,
       },
       {

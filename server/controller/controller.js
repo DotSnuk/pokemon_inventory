@@ -1,5 +1,5 @@
 const db = require('../db/queries');
-const pokeapi = require('../api/poke');
+// const pokeapi = require('../api/poke');
 
 async function allTrainersGet(req, res) {
   const trainers = await db.getAllTrainers();
