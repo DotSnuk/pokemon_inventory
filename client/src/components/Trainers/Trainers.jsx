@@ -2,12 +2,15 @@ import { useEffect, useState, useContext } from 'react';
 import { getTrainers } from '../../api/backend';
 import Card from '../Card/Card';
 import styles from './Trainers.module.css';
-import { useActiveTrainer } from '../TrainerContext/TrainerContextProvider';
+import { Link } from 'react-router-dom';
+import {
+  useActiveTrainer,
+  useSetActiveTrainer,
+} from '../TrainerContext/TrainerContextProvider';
 
 export default function Trainer() {
   const [trainers, setTrainers] = useState([]);
-  const activeTrainer = useActiveTrainer();
-  console.log(activeTrainer);
+  const setActiveTrainer = useSetActiveTrainer();
 
   useEffect(() => {
     async function handleGetTrainers() {
@@ -17,7 +20,13 @@ export default function Trainer() {
   }, []);
 
   const trainerCards = trainers.map(trainer => (
-    <Card key={trainer.id} name={trainer.name} />
+    <Link
+      to='/trainerProfile'
+      key={trainer.id}
+      onClick={() => setActiveTrainer(trainer)}
+    >
+      <Card name={trainer.name} />
+    </Link>
   ));
 
   return (

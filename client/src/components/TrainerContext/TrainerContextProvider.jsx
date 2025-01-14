@@ -6,9 +6,13 @@ const SetActiveTrainerContext = createContext(null);
 export function TrainerProvider({ children }) {
   const [activeTrainer, setActiveTrainer] = useState(null);
 
+  function handleSetActiveTrainer(trainer) {
+    setActiveTrainer(trainer);
+  }
+
   return (
     <ActiveTrainerContext.Provider value={activeTrainer}>
-      <SetActiveTrainerContext.Provider value={setActiveTrainer}>
+      <SetActiveTrainerContext.Provider value={handleSetActiveTrainer}>
         {children}
       </SetActiveTrainerContext.Provider>
     </ActiveTrainerContext.Provider>

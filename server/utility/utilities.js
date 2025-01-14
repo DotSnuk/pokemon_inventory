@@ -4,4 +4,15 @@ function getLastPartOfURL(url) {
   return splittedURL[splittedURL.length - 2];
 }
 
-module.exports = { getLastPartOfURL };
+function getStat(stat) {
+  const id = parseInt(getLastPartOfURL(stat.stat.url));
+  return {
+    1: { hp: stat.base_stat },
+    2: { attack: stat.base_stat },
+    3: { defense: stat.base_stat },
+    4: { special_attack: stat.base_stat },
+    5: { special_defense: stat.base_stat },
+    6: { speed: stat.base_stat },
+  }[id];
+}
+module.exports = { getLastPartOfURL, getStat };

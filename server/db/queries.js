@@ -15,6 +15,14 @@ async function getAllMoves() {
   return rows;
 }
 
+async function getCountPokemonTrainer(trainerId) {
+  const { rows } = await pool.query(
+    `SELECT Count(pokemon_id) FROM trainer_pokemon WHERE trainer_id = $1`,
+    [trainerId],
+  );
+  return rows[0].count;
+}
+
 async function isPokemonInDB(orderid) {
   const { rows } = await pool.query(
     'SELECT orderid FROM pokemon WHERE orderid = $1',
@@ -72,6 +80,7 @@ module.exports = {
   getAllTrainers,
   getAllPokemon,
   getAllMoves,
+  getCountPokemonTrainer,
   insertPokemon,
   isPokemonInDB,
   getAllTypes,

@@ -13,6 +13,15 @@ async function populateWithPokemon(pokemons) {
       orderid: dataFromApi.order,
       img_url: dataFromApi.sprites.other['official-artwork'].front_default,
     };
+    // const stats = dataFromApi.stats.map(stat => utility.getStat(stat));
+    const stats = dataFromApi.stats.reduce(
+      (prev, cur) => ({
+        ...prev,
+        ...utility.getStat(cur),
+      }),
+      {},
+    );
+    console.log(stats);
     queries.insertPokemon(data);
     populateWithPokemonType(dataFromApi);
     populateWithPokemonMoves(dataFromApi);
@@ -75,10 +84,10 @@ async function comparePokemonsToApi() {
   console.log('Checking external API');
   const api = await pokeapi.getAllPokemon();
   console.log(`Pokemon in DB: ${db.length}. Pokemon in API: ${api.length}`);
-  if (db.length < api.length) {
-    console.log(`Adding pokemon from API`);
-    return populateWithPokemon(api);
-  }
+  // if (db.length < api.length) {
+  console.log(`Adding pokemon from API`);
+  return populateWithPokemon(api);
+  // }
 }
 
 async function compareTypesToApi() {

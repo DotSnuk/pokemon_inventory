@@ -11,7 +11,14 @@ async function allPokemonGet(req, res) {
   res.send(pokemon);
 }
 
+async function trainerPokemonCount(req, res) {
+  console.log(req.params.trainer_id);
+  const count = await db.getCountPokemonTrainer(req.params.trainer_id);
+  res.send(count);
+}
+
 module.exports = {
   allTrainersGet,
   allPokemonGet,
+  trainerPokemonCount,
 };
