@@ -32,10 +32,32 @@ async function isPokemonInDB(orderid) {
 }
 
 async function insertPokemon(data) {
-  const { id, name, orderid, img_url } = data;
+  const {
+    id,
+    name,
+    orderid,
+    img_url,
+    hp,
+    attack,
+    defense,
+    special_attack,
+    special_defense,
+    speed,
+  } = data;
   await pool.query(
-    `INSERT INTO pokemon (id, name, orderid, img_url) VALUES ($1, $2, $3, $4) ON CONFLICT (id) DO NOTHING`,
-    [id, name, orderid, img_url],
+    `INSERT INTO pokemon (id, name, orderid, img_url, hp, attack, defense, special_attack, special_defense, speed) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) ON CONFLICT (id) DO NOTHING`,
+    [
+      id,
+      name,
+      orderid,
+      img_url,
+      hp,
+      attack,
+      defense,
+      special_attack,
+      special_defense,
+      speed,
+    ],
   );
 }
 
@@ -76,6 +98,15 @@ async function getAllTypes() {
   return rows;
 }
 
+async function updateWithStats(data) {
+  const { id, hp, attack, defense, special_attack, special_defense, speed } =
+    data;
+  await pool.query(
+    `UPDATE pokemon SET hp = $2, attack = $3, defense = $4, special_attack = $5, special_defense = $6, speed = $7 WHERE id = $1`,
+    [id, hp, attack, defense, special_attack, special_defense, speed],
+  );
+}
+
 module.exports = {
   getAllTrainers,
   getAllPokemon,
@@ -88,4 +119,5 @@ module.exports = {
   insertMove,
   insertPokemonType,
   insertPokemonMove,
+  updateWithStats,
 };

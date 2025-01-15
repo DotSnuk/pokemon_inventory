@@ -21,8 +21,8 @@ async function populateWithPokemon(pokemons) {
       }),
       {},
     );
-    console.log(stats);
-    queries.insertPokemon(data);
+    queries.insertPokemon({ ...data, ...stats });
+    // queries.updateWithStats({ ...data, ...stats });
     populateWithPokemonType(dataFromApi);
     populateWithPokemonMoves(dataFromApi);
   });
@@ -84,10 +84,10 @@ async function comparePokemonsToApi() {
   console.log('Checking external API');
   const api = await pokeapi.getAllPokemon();
   console.log(`Pokemon in DB: ${db.length}. Pokemon in API: ${api.length}`);
-  // if (db.length < api.length) {
-  console.log(`Adding pokemon from API`);
-  return populateWithPokemon(api);
-  // }
+  if (db.length < api.length) {
+    console.log(`Adding pokemon from API`);
+    return populateWithPokemon(api);
+  }
 }
 
 async function compareTypesToApi() {
