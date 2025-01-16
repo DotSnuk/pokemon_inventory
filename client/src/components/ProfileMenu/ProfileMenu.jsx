@@ -22,6 +22,7 @@ export default function ProfileMenu() {
         path={'/trainerPokemon'}
         optionalText={pokemonCount}
       />
+      <Button name={'Add Pokemon'} path={'/addPokemon'} />
     </nav>
   );
 }
