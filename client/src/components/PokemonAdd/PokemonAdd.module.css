@@ -10,17 +10,25 @@
 
 .grid {
   display: grid;
-  flex: 0 0 700px;
-  grid-template: repeat(10, 80px) / repeat(10, 80px);
-}
-
-.grid div {
-  border: 1px solid black;
-  box-sizing: border-box;
+  flex: 1 1 600px;
+  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
 }
 
 .preview {
   display: flex;
   flex: 1 1 200px;
   flex-direction: column;
+}
+
+.pageContainer {
+  margin: 5px;
+  gap: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pageContainer input {
+  height: 30px;
+  width: 30px;
 }

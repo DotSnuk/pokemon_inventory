@@ -7,7 +7,8 @@ async function allTrainersGet(req, res) {
 }
 
 async function allPokemonGet(req, res) {
-  const pokemon = await db.getAllPokemon();
+  const { sorted } = req.query;
+  const pokemon = await db.getAllPokemon(sorted);
   res.send(pokemon);
 }
 

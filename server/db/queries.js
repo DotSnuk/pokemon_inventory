@@ -5,8 +5,13 @@ async function getAllTrainers() {
   return rows;
 }
 
-async function getAllPokemon() {
-  const { rows } = await pool.query('SELECT * FROM pokemon');
+async function getAllPokemon(query) {
+  const { rows } =
+    query === 'true'
+      ? await pool.query(
+          'SELECT * FROM pokemon WHERE orderid != -1 AND id < 10000 ORDER BY id',
+        )
+      : await pool.query(`SELECT * FROM pokemon`);
   return rows;
 }
 

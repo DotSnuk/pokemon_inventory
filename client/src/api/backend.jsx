@@ -7,8 +7,8 @@ export async function getTrainers() {
   return response.data;
 }
 
-export async function getPokemon() {
-  const response = await axios.get(`/api/pokemon`);
+export async function getPokemon(isSorted = true) {
+  const response = await axios.get(`/api/pokemon?sorted=${isSorted}`);
   return response.data;
 }
 

@@ -19,14 +19,13 @@ export default function PokemonAdd() {
   }, []);
 
   function getCurrentPokemon() {
-    if ((page + 1) * PAGESIZE > pokemon.current.length)
-      return pokemon.current.slice(page * PAGESIZE);
-    return pokemon.current.slice(page * PAGESIZE, (page + 1) * PAGESIZE);
+    if (page * PAGESIZE > pokemon.current.length)
+      return pokemon.current.slice((page - 1) * PAGESIZE);
+    return pokemon.current.slice((page - 1) * PAGESIZE, page * PAGESIZE);
   }
 
   function incrementPage() {
-    if ((page + 1) * PAGESIZE < pokemon.current.length)
-      setPage(page => page + 1);
+    if (page * PAGESIZE < pokemon.current.length) setPage(page => page + 1);
   }
 
   function decrementPage() {
@@ -39,15 +38,16 @@ export default function PokemonAdd() {
     <div className={styles.pokeSelector}>
       <div className={styles.container}>
         <div className={styles.grid}>
-          <div>a</div>
-          <div>a</div>
-          <div>a</div>
-          <div>a</div>
+          {currentPokemon.length > 0 &&
+            currentPokemon.map(poke => (
+              <PokemonGridItem key={poke.id} pokemon={poke} />
+            ))}
         </div>
         <div className={styles.preview}></div>
       </div>
       <div className={styles.pageContainer}>
-        asd
+        <input type='button' value={'-'} onClick={() => decrementPage()} />
+        <div>Page {page}</div>
         <input type='button' value={'+'} onClick={() => incrementPage()} />
       </div>
     </div>
