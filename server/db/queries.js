@@ -5,13 +5,20 @@ async function getAllTrainers() {
   return rows;
 }
 
-async function getAllPokemon(query) {
+async function getAllPokemon(isSorted) {
   const { rows } =
-    query === 'true'
+    isSorted === 'true'
       ? await pool.query(
           'SELECT * FROM pokemon WHERE orderid != -1 AND id < 10000 ORDER BY id',
         )
       : await pool.query(`SELECT * FROM pokemon`);
+  return rows;
+}
+
+async function getAllPokemonWithType() {
+  const { rows } = await pool.query(
+    `SELECT p.*, STRING_AGG(t.name, ', ') AS type FROM pokemon p JOIN pokemon_types pt ON p.id = pt.pokemon_id JOIN types t ON t.id = pt.type_id GROUP BY p.id`,
+  );
   return rows;
 }
 
@@ -117,6 +124,7 @@ module.exports = {
   getAllPokemon,
   getAllMoves,
   getCountPokemonTrainer,
+  getAllPokemonWithType,
   insertPokemon,
   isPokemonInDB,
   getAllTypes,

@@ -12,6 +12,11 @@ export async function getPokemon(isSorted = true) {
   return response.data;
 }
 
+export async function getPokemonWithType() {
+  const response = await axios.get(`/api/pokemonWithType`);
+  return response.data;
+}
+
 export async function getPokemonCount(trainer_id) {
   const response = await axios.get(`/api/trainerPokemonCount/${trainer_id}`);
   console.log(response.data);

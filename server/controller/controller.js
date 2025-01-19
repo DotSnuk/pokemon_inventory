@@ -12,6 +12,11 @@ async function allPokemonGet(req, res) {
   res.send(pokemon);
 }
 
+async function allPokemonWithTypeGet(req, res) {
+  const pokemon = await db.getAllPokemonWithType();
+  res.send(pokemon);
+}
+
 async function trainerPokemonCount(req, res) {
   console.log(req.params.trainer_id);
   const count = await db.getCountPokemonTrainer(req.params.trainer_id);
@@ -21,5 +26,6 @@ async function trainerPokemonCount(req, res) {
 module.exports = {
   allTrainersGet,
   allPokemonGet,
+  allPokemonWithTypeGet,
   trainerPokemonCount,
 };
