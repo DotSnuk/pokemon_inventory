@@ -1,0 +1,17 @@
+@import '../../assets/colors.css';
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px;
+}
+
+img {
+  width: 100%;
+}
+
+p {
+  align-self: flex-start;
+  margin: 1px;
+}

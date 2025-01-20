@@ -2,12 +2,13 @@ import styles from './PokemonAdd.module.css';
 import { useState, useRef, useEffect } from 'react';
 import { getPokemonWithType } from '../../api/backend';
 import PokemonGridItem from '../PokemonGridItem/PokemonGridItem';
+import PokemonPreview from '../PokemonPreview/PokemonPreview';
 
 export default function PokemonAdd() {
   const PAGESIZE = 100;
   const pokemon = useRef([]);
   const [page, setPage] = useState();
-  const [selectedPokemon, setSelectedPokemon] = useState();
+  const [selectedPokemon, setSelectedPokemon] = useState(null);
   const currentPokemon = getCurrentPokemon();
 
   useEffect(() => {
@@ -32,6 +33,10 @@ export default function PokemonAdd() {
     if (page - 1 > 0) setPage(page => page - 1);
   }
 
+  function divClick(pokemon) {
+    setSelectedPokemon(pokemon);
+  }
+
   return (
     <div className={styles.pokeSelector}>
       <div className={styles.container}>
@@ -41,11 +46,15 @@ export default function PokemonAdd() {
               <PokemonGridItem
                 key={poke.id}
                 pokemon={poke}
-                onClick={() => setSelectedPokemon(poke.id)}
+                divClick={divClick}
               />
             ))}
         </div>
-        <div className={styles.preview}>{selectedPokemon && <></>}</div>
+        <div className={styles.preview}>
+          {selectedPokemon !== null && (
+            <PokemonPreview pokemon={selectedPokemon} />
+          )}
+        </div>
       </div>
       <div className={styles.pageContainer}>
         <input type='button' value={'-'} onClick={() => decrementPage()} />
