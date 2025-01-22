@@ -119,6 +119,8 @@ async function updateWithStats(data) {
   );
 }
 
+async function addPokemonTrainer(id, isActive, nickname) {}
+
 module.exports = {
   getAllTrainers,
   getAllPokemon,
@@ -133,4 +135,5 @@ module.exports = {
   insertPokemonType,
   insertPokemonMove,
   updateWithStats,
+  addPokemonTrainer,
 };

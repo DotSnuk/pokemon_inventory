@@ -22,3 +22,9 @@ export async function getPokemonCount(trainer_id) {
   console.log(response.data);
   return response.data;
 }
+
+export async function postAddPokemon(data) {
+  const response = await axios.post(`/api/addPokemon`, data);
+  console.log(response.data);
+  return response.data;
+}

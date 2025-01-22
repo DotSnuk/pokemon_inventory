@@ -8,6 +8,7 @@ const corsOptions = {
 };
 require('dotenv').config();
 
+app.use(express.json());
 app.use('/avatars', express.static(path.join(__dirname, '/assets/trainers/')));
 
 app.use(cors(corsOptions));

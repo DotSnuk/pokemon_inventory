@@ -1,9 +1,9 @@
 import App from './App';
 import Pokemon from './components/pokemon/pokemon';
-import TextComponent from './components/Text/Text';
 import TrainerProfile from './components/TrainerProfile/TrainerProfile';
 import Trainers from './components/Trainers/Trainers';
 import PokemonAdd from './components/PokemonAdd/PokemonAdd';
+import RequireTrainer from './components/RequireTrainer/RequireTrainer';
 
 export const routes = [
   {
@@ -22,7 +22,14 @@ export const routes = [
         path: 'pokemon',
         element: <Pokemon />,
       },
-      { path: 'addPokemon', element: <PokemonAdd /> },
+      {
+        path: 'addPokemon',
+        element: (
+          <RequireTrainer>
+            <PokemonAdd />
+          </RequireTrainer>
+        ),
+      },
     ],
   },
 ];

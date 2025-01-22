@@ -7,4 +7,6 @@ router.get('/pokemon', controller.allPokemonGet);
 router.get('/pokemonWithType', controller.allPokemonWithTypeGet);
 router.get('/trainerPokemonCount/:trainer_id', controller.trainerPokemonCount);
 
+router.post('/addPokemon', controller.addPokemon);
+
 module.exports = router;

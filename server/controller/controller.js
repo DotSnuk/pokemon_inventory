@@ -23,9 +23,17 @@ async function trainerPokemonCount(req, res) {
   res.send(count);
 }
 
+async function addPokemon(req, res) {
+  console.log(req.body);
+  const response = await db.addPokemonTrainer();
+  // here perhaps have a next(), depending on what happends in the db
+  res.send(response);
+}
+
 module.exports = {
   allTrainersGet,
   allPokemonGet,
   allPokemonWithTypeGet,
   trainerPokemonCount,
+  addPokemon,
 };
