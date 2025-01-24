@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { postAddPokemon } from '../../api/backend';
 import { useActiveTrainer } from '../TrainerContext/TrainerContextProvider';
 
-export default function PokemonPreview({ pokemon }) {
+export default function PokemonPreview({ pokemon, setMessageBackend }) {
   const [nickname, setNickname] = useState('');
   const [isActive, setIsActive] = useState(false);
   const trainerId = useActiveTrainer().id;
@@ -33,16 +33,25 @@ export default function PokemonPreview({ pokemon }) {
         <b>Speed:</b> {pokemon.speed}
       </p>
       <form
-        onSubmit={e => addTrainerPokemon(e, trainerId, pokemon, nickname)}
+        onSubmit={e =>
+          addTrainerPokemon(
+            e,
+            trainerId,
+            pokemon,
+            nickname.trim(),
+            isActive,
+            setMessageBackend,
+          )
+        }
         method='POST'
       >
         <label htmlFor='isActive'>Is active: </label>
         <input
           type='checkbox'
-          value={isActive}
+          defaultChecked={isActive}
+          onChange={e => setIsActive(e.target.checked)}
           name='isActive'
           id='isActive'
-          onChange={e => setIsActive(e.target.value)}
         />
         <input
           type='text'
@@ -58,9 +67,20 @@ export default function PokemonPreview({ pokemon }) {
   );
 }
 
-function addTrainerPokemon(e, trainerId, pokemon, nickname) {
+async function addTrainerPokemon(
+  e,
+  trainerId,
+  pokemon,
+  nickname,
+  isActive,
+  setMessageBackend,
+) {
   e.preventDefault();
-  const data = { trainerId, pokemon, nickname };
-  postAddPokemon(data);
+  const data =
+    nickname === ''
+      ? { trainerId, pokemon, nickname: null, isActive }
+      : { trainerId, pokemon, nickname, isActive };
+  const message = await postAddPokemon(data);
+  setMessageBackend(message);
   // call backend
 }

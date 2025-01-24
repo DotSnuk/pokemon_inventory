@@ -23,11 +23,13 @@ async function trainerPokemonCount(req, res) {
   res.send(count);
 }
 
-async function addPokemon(req, res) {
-  console.log(req.body);
-  const response = await db.addPokemonTrainer();
-  // here perhaps have a next(), depending on what happends in the db
-  res.send(response);
+async function addPokemon(req, res, next) {
+  try {
+    await db.addPokemonTrainer(req.body);
+    return res.status(200).send('success');
+  } catch (error) {
+    next(error);
+  }
 }
 
 module.exports = {

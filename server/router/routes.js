@@ -8,5 +8,6 @@ router.get('/pokemonWithType', controller.allPokemonWithTypeGet);
 router.get('/trainerPokemonCount/:trainer_id', controller.trainerPokemonCount);
 
 router.post('/addPokemon', controller.addPokemon);
+// router.post('/addPokemon', controller.errorAddPokemon);
 
 module.exports = router;

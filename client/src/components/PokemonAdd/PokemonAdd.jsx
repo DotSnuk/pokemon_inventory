@@ -9,6 +9,7 @@ export default function PokemonAdd() {
   const pokemon = useRef([]);
   const [page, setPage] = useState();
   const [selectedPokemon, setSelectedPokemon] = useState(null);
+  const [messageBackend, setMessageBackend] = useState('');
   const currentPokemon = getCurrentPokemon();
 
   useEffect(() => {
@@ -52,11 +53,15 @@ export default function PokemonAdd() {
         </div>
         <div className={styles.preview}>
           {selectedPokemon !== null && (
-            <PokemonPreview pokemon={selectedPokemon} />
+            <PokemonPreview
+              pokemon={selectedPokemon}
+              setMessageBackend={setMessageBackend}
+            />
           )}
         </div>
       </div>
       <div className={styles.pageContainer}>
+        {messageBackend}
         <input type='button' value={'-'} onClick={() => decrementPage()} />
         <div>Page {page}</div>
         <input type='button' value={'+'} onClick={() => incrementPage()} />

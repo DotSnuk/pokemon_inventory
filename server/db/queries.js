@@ -119,7 +119,34 @@ async function updateWithStats(data) {
   );
 }
 
-async function addPokemonTrainer(id, isActive, nickname) {}
+async function addPokemonTrainer(data) {
+  const { trainerId, pokemon, nickname, isActive } = data;
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO trainer_pokemon (trainer_id, pokemon_id, is_active, hp, attack, defense, special_attack, special_defense, speed) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id`,
+      [
+        trainerId,
+        pokemon.id,
+        isActive,
+        pokemon.hp,
+        pokemon.attack,
+        pokemon.defense,
+        pokemon.special_attack,
+        pokemon.special_defense,
+        pokemon.speed,
+      ],
+    );
+    if (nickname !== null)
+      pool.query(`UPDATE trainer_pokemon SET nickname = $1 WHERE id = $2`, [
+        nickname,
+        rows[0].id,
+      ]);
+    return rows;
+  } catch (error) {
+    console.error('Error in adding pokemon to trainer', error);
+    throw new Error('Failed to add Pokemon to Trainer');
+  }
+}
 
 module.exports = {
   getAllTrainers,

@@ -6,7 +6,6 @@ import { useActiveTrainer } from './components/TrainerContext/TrainerContextProv
 import { Navigate } from 'react-router-dom';
 
 export default function App() {
-  if (useActiveTrainer() === null) <Navigate to='/' replace />;
   return (
     <TrainerProvider>
       <div className={styles.wrapper}>
