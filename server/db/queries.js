@@ -143,8 +143,7 @@ async function addPokemonTrainer(data) {
       ]);
     return rows;
   } catch (error) {
-    console.error('Error in adding pokemon to trainer', error);
-    throw new Error('Failed to add Pokemon to Trainer');
+    throw new Error(`Failed to add Pokemon to Trainer. ${error.message}`);
   }
 }
 

@@ -26,7 +26,9 @@ async function trainerPokemonCount(req, res) {
 async function addPokemon(req, res, next) {
   try {
     await db.addPokemonTrainer(req.body);
-    return res.status(200).send('success');
+    return res
+      .status(200)
+      .send({ success: true, message: 'Pokemon added to Trainer' });
   } catch (error) {
     next(error);
   }

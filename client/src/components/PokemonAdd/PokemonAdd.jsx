@@ -1,6 +1,7 @@
 import styles from './PokemonAdd.module.css';
 import { useState, useRef, useEffect } from 'react';
 import { getPokemonWithType } from '../../api/backend';
+import PokemonGrid from '../PokemonGrid/PokemonGrid';
 import PokemonGridItem from '../PokemonGridItem/PokemonGridItem';
 import PokemonPreview from '../PokemonPreview/PokemonPreview';
 
@@ -39,33 +40,36 @@ export default function PokemonAdd() {
   }
 
   return (
-    <div className={styles.pokeSelector}>
-      <div className={styles.container}>
-        <div className={styles.grid}>
-          {currentPokemon.length > 0 &&
-            currentPokemon.map(poke => (
-              <PokemonGridItem
-                key={poke.id}
-                pokemon={poke}
-                divClick={divClick}
+    <>
+      <div>{messageBackend}</div>
+      <div className={styles.pokeSelector}>
+        <div className={styles.container}>
+          <div className={styles.grid}>
+            {currentPokemon.length > 0 &&
+              currentPokemon.map(poke => (
+                <PokemonGridItem
+                  key={poke.id}
+                  pokemon={poke}
+                  divClick={divClick}
+                />
+              ))}
+          </div>
+          <div className={styles.preview}>
+            {selectedPokemon !== null && (
+              <PokemonPreview
+                pokemon={selectedPokemon}
+                setMessageBackend={setMessageBackend}
               />
-            ))}
+            )}
+          </div>
         </div>
-        <div className={styles.preview}>
-          {selectedPokemon !== null && (
-            <PokemonPreview
-              pokemon={selectedPokemon}
-              setMessageBackend={setMessageBackend}
-            />
-          )}
+
+        <div className={styles.pageContainer}>
+          <input type='button' value={'-'} onClick={() => decrementPage()} />
+          <div>Page {page}</div>
+          <input type='button' value={'+'} onClick={() => incrementPage()} />
         </div>
       </div>
-      <div className={styles.pageContainer}>
-        {messageBackend}
-        <input type='button' value={'-'} onClick={() => decrementPage()} />
-        <div>Page {page}</div>
-        <input type='button' value={'+'} onClick={() => incrementPage()} />
-      </div>
-    </div>
+    </>
   );
 }

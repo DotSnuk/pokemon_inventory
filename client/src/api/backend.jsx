@@ -19,20 +19,14 @@ export async function getPokemonWithType() {
 
 export async function getPokemonCount(trainer_id) {
   const response = await axios.get(`/api/trainerPokemonCount/${trainer_id}`);
-  console.log(response.data);
   return response.data;
 }
 
 export async function postAddPokemon(data) {
   try {
-    await axios.post(`/api/addPokemon`, data);
-    console.log('Pokemon added');
-    return 'Pokemon added';
+    const response = await axios.post(`/api/addPokemon`, data);
+    return response;
   } catch (error) {
-    console.log(error.response);
-    console.log('Could not add pokemon');
-    return 'Could not add pokemon';
-
-    // console.error(error.message);
+    return error.response;
   }
 }

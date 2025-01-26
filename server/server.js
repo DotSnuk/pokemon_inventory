@@ -16,9 +16,8 @@ app.use(cors(corsOptions));
 app.use('/', router);
 app.use((err, req, res, next) => {
   console.log('hello, i am here now');
-  // console.error(err);
-  // console.log(err.message);
-  res.status(500).send(err);
+  console.log(err.message);
+  res.status(500).send({ success: false, message: err.message });
 });
 
 const PORT = 3000;

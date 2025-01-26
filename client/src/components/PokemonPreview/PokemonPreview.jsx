@@ -80,7 +80,7 @@ async function addTrainerPokemon(
     nickname === ''
       ? { trainerId, pokemon, nickname: null, isActive }
       : { trainerId, pokemon, nickname, isActive };
-  const message = await postAddPokemon(data);
-  setMessageBackend(message);
-  // call backend
+  const response = await postAddPokemon(data);
+  // deal with reponse.data.success
+  setMessageBackend(response.data.message);
 }
