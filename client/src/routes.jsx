@@ -4,6 +4,7 @@ import TrainerProfile from './components/TrainerProfile/TrainerProfile';
 import Trainers from './components/Trainers/Trainers';
 import PokemonAdd from './components/PokemonAdd/PokemonAdd';
 import RequireTrainer from './components/RequireTrainer/RequireTrainer';
+import TrainerPokemon from './components/TrainerPokemon/TrainerPokemon';
 
 export const routes = [
   {
@@ -21,6 +22,14 @@ export const routes = [
       {
         path: 'pokemon',
         element: <Pokemon />,
+      },
+      {
+        path: 'trainerPokemon',
+        element: (
+          <RequireTrainer>
+            <TrainerPokemon />
+          </RequireTrainer>
+        ),
       },
       {
         path: 'addPokemon',

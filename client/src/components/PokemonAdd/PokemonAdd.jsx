@@ -2,7 +2,6 @@ import styles from './PokemonAdd.module.css';
 import { useState, useRef, useEffect } from 'react';
 import { getPokemonWithType } from '../../api/backend';
 import PokemonGrid from '../PokemonGrid/PokemonGrid';
-import PokemonGridItem from '../PokemonGridItem/PokemonGridItem';
 import PokemonPreview from '../PokemonPreview/PokemonPreview';
 
 export default function PokemonAdd() {
