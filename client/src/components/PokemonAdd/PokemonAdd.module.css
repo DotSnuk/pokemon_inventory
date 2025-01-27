@@ -4,14 +4,8 @@
 }
 
 .container {
-  display: flex;
-  flex-direction: row;
-}
-
-.grid {
   display: grid;
-  flex: 1 1 600px;
-  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+  grid-template-columns: 3fr 1fr;
 }
 
 .preview {

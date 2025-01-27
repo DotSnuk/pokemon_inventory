@@ -1,0 +1,23 @@
+.grid {
+  display: grid;
+  flex: 1 1 600px;
+  grid-template: repeat(10, 1fr) / repeat(10, 1fr);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.pageContainer {
+  margin: 5px;
+  gap: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.pageContainer input {
+  height: 30px;
+  width: 30px;
+}

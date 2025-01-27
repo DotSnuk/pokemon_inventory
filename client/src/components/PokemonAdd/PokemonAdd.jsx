@@ -6,36 +6,18 @@ import PokemonGridItem from '../PokemonGridItem/PokemonGridItem';
 import PokemonPreview from '../PokemonPreview/PokemonPreview';
 
 export default function PokemonAdd() {
-  const PAGESIZE = 100;
-  const pokemon = useRef([]);
-  const [page, setPage] = useState();
+  const [pokemon, setPokemon] = useState([]);
   const [selectedPokemon, setSelectedPokemon] = useState(null);
   const [messageBackend, setMessageBackend] = useState('');
-  const currentPokemon = getCurrentPokemon();
 
   useEffect(() => {
     async function handleGetPokemon() {
-      await getPokemonWithType().then(data => (pokemon.current = data));
-      setPage(1);
+      await getPokemonWithType().then(data => setPokemon(data));
     }
     handleGetPokemon();
   }, []);
 
-  function getCurrentPokemon() {
-    if (page * PAGESIZE > pokemon.current.length)
-      return pokemon.current.slice((page - 1) * PAGESIZE);
-    return pokemon.current.slice((page - 1) * PAGESIZE, page * PAGESIZE);
-  }
-
-  function incrementPage() {
-    if (page * PAGESIZE < pokemon.current.length) setPage(page => page + 1);
-  }
-
-  function decrementPage() {
-    if (page - 1 > 0) setPage(page => page - 1);
-  }
-
-  function divClick(pokemon) {
+  function gridClick(pokemon) {
     setSelectedPokemon(pokemon);
   }
 
@@ -44,16 +26,9 @@ export default function PokemonAdd() {
       <div>{messageBackend}</div>
       <div className={styles.pokeSelector}>
         <div className={styles.container}>
-          <div className={styles.grid}>
-            {currentPokemon.length > 0 &&
-              currentPokemon.map(poke => (
-                <PokemonGridItem
-                  key={poke.id}
-                  pokemon={poke}
-                  divClick={divClick}
-                />
-              ))}
-          </div>
+          {pokemon.length > 0 && (
+            <PokemonGrid pokemon={pokemon} gridClick={gridClick} />
+          )}
           <div className={styles.preview}>
             {selectedPokemon !== null && (
               <PokemonPreview
@@ -62,12 +37,6 @@ export default function PokemonAdd() {
               />
             )}
           </div>
-        </div>
-
-        <div className={styles.pageContainer}>
-          <input type='button' value={'-'} onClick={() => decrementPage()} />
-          <div>Page {page}</div>
-          <input type='button' value={'+'} onClick={() => incrementPage()} />
         </div>
       </div>
     </>
