@@ -1,28 +1,14 @@
 .pokeSelector {
-  display: grid;
-  grid-template-rows: minmax(500px, 5fr) 1fr;
 }
 
 .container {
   display: grid;
   grid-template-columns: 3fr 1fr;
+  box-sizing: border-box;
 }
 
 .preview {
   display: flex;
   flex: 1 1 200px;
   flex-direction: column;
-}
-
-.pageContainer {
-  margin: 5px;
-  gap: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.pageContainer input {
-  height: 30px;
-  width: 30px;
 }

@@ -34,10 +34,22 @@ async function addPokemon(req, res, next) {
   }
 }
 
+async function trainerPokemon(req, res) {
+  const pokemon = await db.getTrainerPokemon(req.params.trainer_id);
+  res.send(pokemon);
+}
+
+async function trainerPokemonId(req, res) {
+  const pokemon = await db.getTrainerPokemonId(req.params.pokemon_id);
+  res.send(pokemon);
+}
+
 module.exports = {
   allTrainersGet,
   allPokemonGet,
   allPokemonWithTypeGet,
   trainerPokemonCount,
   addPokemon,
+  trainerPokemon,
+  trainerPokemonId,
 };

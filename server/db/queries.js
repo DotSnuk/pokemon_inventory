@@ -35,6 +35,26 @@ async function getCountPokemonTrainer(trainerId) {
   return rows[0].count;
 }
 
+async function getTrainerPokemon(trainerId) {
+  const active = await pool.query(
+    `SELECT tp.*, p.name, p.img_url FROM trainer_pokemon tp INNER JOIN pokemon p ON tp.pokemon_id = p.id WHERE trainer_id = $1 AND is_active = true`,
+    [trainerId],
+  );
+  const inactive = await pool.query(
+    `SELECT tp.*, p.name, p.img_url FROM trainer_pokemon tp INNER JOIN pokemon p ON tp.pokemon_id = p.id  WHERE trainer_id = $1 AND is_active = false`,
+    [trainerId],
+  );
+  return { active: active.rows, inactive: inactive.rows };
+}
+
+async function getTrainerPokemonId(pokemonId) {
+  const { rows } = await pool.query(
+    `SELECT tp.*, p.name, STRING_AGG(t.name, ', ') AS TYPE FROM trainer_pokemon tp JOIN pokemon p ON tp.pokemon_id = p.id JOIN pokemon_types pt ON p.id = pt.pokemon_id JOIN types t ON t.id = pt.type_id WHERE tp.id = $1 GROUP BY tp.id, p.name;`,
+    [pokemonId],
+  );
+  return rows;
+}
+
 async function isPokemonInDB(orderid) {
   const { rows } = await pool.query(
     'SELECT orderid FROM pokemon WHERE orderid = $1',
@@ -153,6 +173,8 @@ module.exports = {
   getAllMoves,
   getCountPokemonTrainer,
   getAllPokemonWithType,
+  getTrainerPokemon,
+  getTrainerPokemonId,
   insertPokemon,
   isPokemonInDB,
   getAllTypes,

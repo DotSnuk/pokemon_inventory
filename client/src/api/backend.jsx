@@ -22,6 +22,25 @@ export async function getPokemonCount(trainer_id) {
   return response.data;
 }
 
+export async function getTrainerPokemon(trainer_id) {
+  const response = await axios.get(`/api/trainerPokemon/${trainer_id}`);
+  console.log(response);
+  return response.data;
+}
+
+export async function getPokemonWithTrainer(pokemon_id, trainer_id) {
+  const response = await axios.get(
+    `/api/pokemonWithTrainer/${pokemon_id}/${trainer_id}`,
+  );
+  console.log(response.data);
+  return response.data;
+}
+
+export async function getTrainerPokemonId(pokemonid) {
+  const response = await axios.get(`/api/trainerPokemonId/${pokemonid}`);
+  return response.data[0];
+}
+
 export async function postAddPokemon(data) {
   try {
     const response = await axios.post(`/api/addPokemon`, data);

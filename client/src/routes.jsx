@@ -20,7 +20,7 @@ export const routes = [
         element: <TrainerProfile />,
       },
       {
-        path: 'pokemon',
+        path: 'trainerPokemonId/:pokemonid',
         element: <Pokemon />,
       },
       {

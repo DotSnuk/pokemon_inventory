@@ -1,23 +1,27 @@
 import { useEffect, useState } from 'react';
-import { getPokemon } from '../../api/backend';
+import { useParams } from 'react-router-dom';
+import { getTrainerPokemonId } from '../../api/backend';
+import { useActiveTrainer } from '../TrainerContext/TrainerContextProvider';
 import Card from '../Card/Card';
 
 export default function Pokemon() {
+  const { pokemonid } = useParams();
   const [pokemon, setPokemon] = useState([]);
 
   useEffect(() => {
-    async function handleGetPokemon() {
-      await getPokemon().then(data => {
-        setPokemon(data);
-      });
+    async function handleGetTrainerPokemon() {
+      await getTrainerPokemonId(pokemonid).then(data => setPokemon(data));
     }
-    handleGetPokemon();
+    handleGetTrainerPokemon();
   }, []);
+
+  console.log(pokemon);
 
   return (
     <>
-      {pokemon.length > 0 &&
-        pokemon.map(poke => <Card key={poke.id} name={poke.name} />)}
+      {pokemon.name}
+      {/* {pokemon.length > 0 &&
+        pokemon.map(poke => <Card key={poke.id} name={poke.name} />)} */}
     </>
   );
 }
