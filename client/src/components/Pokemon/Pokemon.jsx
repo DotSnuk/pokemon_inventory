@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getTrainerPokemonId } from '../../api/backend';
 import { useActiveTrainer } from '../TrainerContext/TrainerContextProvider';
-import Card from '../Card/Card';
+import PokemonProfile from '../PokemonProfile/PokemonProfile';
+import PokemonForm from '../PokemonForm/PokemonForm';
 
 export default function Pokemon() {
   const { pokemonid } = useParams();
   const [pokemon, setPokemon] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     async function handleGetTrainerPokemon() {
@@ -15,13 +17,18 @@ export default function Pokemon() {
     handleGetTrainerPokemon();
   }, []);
 
-  console.log(pokemon);
-
   return (
     <>
-      {pokemon.name}
-      {/* {pokemon.length > 0 &&
-        pokemon.map(poke => <Card key={poke.id} name={poke.name} />)} */}
+      {isEditing === false ? (
+        <PokemonProfile pokemon={pokemon} />
+      ) : (
+        <PokemonForm pokemon={pokemon} />
+      )}
+      <input
+        type='button'
+        onClick={() => setIsEditing(!isEditing)}
+        value='Edit'
+      />
     </>
   );
 }

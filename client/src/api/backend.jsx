@@ -49,3 +49,13 @@ export async function postAddPokemon(data) {
     return error.response;
   }
 }
+
+export async function postUpdatePokemon(data) {
+  try {
+    const response = await axios.post(`/api/updatePokemon`, data);
+    console.log(response);
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+}

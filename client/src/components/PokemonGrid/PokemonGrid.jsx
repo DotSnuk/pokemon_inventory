@@ -7,6 +7,7 @@ export default function PokemonGrid({ pokemon, gridClick, pagesize = 36 }) {
   const currentPokemon = getCurrentPokemon();
   const containerRef = useRef(null);
   const [gridWidth, setGridWidth] = useState(0);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     if (containerRef.current !== null)

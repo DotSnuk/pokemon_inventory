@@ -34,6 +34,15 @@ async function addPokemon(req, res, next) {
   }
 }
 
+async function updatePokemon(req, res, next) {
+  try {
+    await db.updatePokemon(req.body);
+    return res.status(200).send({ success: true, message: 'Pokemon updated' });
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function trainerPokemon(req, res) {
   const pokemon = await db.getTrainerPokemon(req.params.trainer_id);
   res.send(pokemon);
@@ -50,6 +59,7 @@ module.exports = {
   allPokemonWithTypeGet,
   trainerPokemonCount,
   addPokemon,
+  updatePokemon,
   trainerPokemon,
   trainerPokemonId,
 };

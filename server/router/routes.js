@@ -10,6 +10,7 @@ router.get('/trainerPokemon/:trainer_id', controller.trainerPokemon);
 router.get('/trainerPokemonId/:pokemon_id', controller.trainerPokemonId);
 
 router.post('/addPokemon', controller.addPokemon);
+router.post('/updatePokemon', controller.updatePokemon);
 // router.post('/addPokemon', controller.errorAddPokemon);
 
 module.exports = router;

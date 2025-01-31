@@ -49,7 +49,7 @@ async function getTrainerPokemon(trainerId) {
 
 async function getTrainerPokemonId(pokemonId) {
   const { rows } = await pool.query(
-    `SELECT tp.*, p.name, STRING_AGG(t.name, ', ') AS TYPE FROM trainer_pokemon tp JOIN pokemon p ON tp.pokemon_id = p.id JOIN pokemon_types pt ON p.id = pt.pokemon_id JOIN types t ON t.id = pt.type_id WHERE tp.id = $1 GROUP BY tp.id, p.name;`,
+    `SELECT tp.*, p.name, p.img_url, STRING_AGG(t.name, ', ') AS TYPE FROM trainer_pokemon tp JOIN pokemon p ON tp.pokemon_id = p.id JOIN pokemon_types pt ON p.id = pt.pokemon_id JOIN types t ON t.id = pt.type_id WHERE tp.id = $1 GROUP BY tp.id, p.name, p.img_url;`,
     [pokemonId],
   );
   return rows;
@@ -167,6 +167,44 @@ async function addPokemonTrainer(data) {
   }
 }
 
+async function updatePokemon(data) {
+  const {
+    id,
+    nickname,
+    hp,
+    attack,
+    defense,
+    special_attack,
+    special_defense,
+    speed,
+  } = data;
+  try {
+    const { rows } = await pool.query(
+      `UPDATE trainer_pokemon SET hp = $2, attack = $3, defense = $4, special_attack = $5, special_defense = $6, speed = $7, nickname = $8 WHERE id = $1`,
+      [
+        id,
+        hp,
+        attack,
+        defense,
+        special_attack,
+        special_defense,
+        speed,
+        nickname,
+      ],
+    );
+    if (nickname === '') {
+      const { rows } = await pool.query(
+        `UPDATE trainer_pokemon SET nickname = NULL WHERE id = $1`,
+        [id],
+      );
+      return rows;
+    }
+    return rows;
+  } catch (error) {
+    throw new Error(`Failed to update ${error.message}`);
+  }
+}
+
 module.exports = {
   getAllTrainers,
   getAllPokemon,
@@ -183,5 +221,6 @@ module.exports = {
   insertPokemonType,
   insertPokemonMove,
   updateWithStats,
+  updatePokemon,
   addPokemonTrainer,
 };
