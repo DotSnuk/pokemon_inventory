@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { getPokemonWithType } from '../../api/backend';
 import PokemonGrid from '../PokemonGrid/PokemonGrid';
 import PokemonPreview from '../PokemonPreview/PokemonPreview';
+import PokemonLoadedProvider from '../PokemonLoadedProvider/PokemonLoadedProvider';
 
 export default function PokemonAdd() {
   const [pokemon, setPokemon] = useState([]);
@@ -26,7 +27,9 @@ export default function PokemonAdd() {
       <div className={styles.pokeSelector}>
         <div className={styles.container}>
           {pokemon.length > 0 && (
-            <PokemonGrid pokemon={pokemon} gridClick={gridClick} />
+            <PokemonLoadedProvider>
+              <PokemonGrid pokemon={pokemon} gridClick={gridClick} />
+            </PokemonLoadedProvider>
           )}
           <div className={styles.preview}>
             {selectedPokemon !== null && (

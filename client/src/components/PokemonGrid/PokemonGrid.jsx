@@ -1,35 +1,70 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
+import { useLoadedContext } from '../PokemonLoadedProvider/PokemonLoadedProvider';
 import PokemonGridItem from '../PokemonGridItem/PokemonGridItem';
 import styles from './PokemonGrid.module.css';
 
 export default function PokemonGrid({ pokemon, gridClick, pagesize = 36 }) {
   const [page, setPage] = useState(1);
-  const currentPokemon = getCurrentPokemon();
+  const [pokemonWithStatus, setPokemonWithStatus] = useState([]);
   const containerRef = useRef(null);
   const [gridWidth, setGridWidth] = useState(0);
-  const [loaded, setLoaded] = useState(false);
+  const { loaded, setLoaded } = useLoadedContext();
+
+  console.log(loaded);
 
   useEffect(() => {
     if (containerRef.current !== null)
       getGridWidth(containerRef.current.offsetWidth);
   }, [containerRef.current]);
 
+  useEffect(() => {
+    const initialPokemonWithStatus = pokemon.map(poke => ({
+      ...poke,
+      loaded: false,
+    }));
+    setPokemonWithStatus(initialPokemonWithStatus);
+  }, [pokemon]);
+
+  const currentPokemon = useMemo(() => {
+    if (pokemonWithStatus.length === 0) return [];
+    const start = (page - 1) * pagesize;
+    const end = page * pagesize;
+    return pokemonWithStatus.slice(
+      start,
+      Math.min(end, pokemonWithStatus.length),
+    );
+  }, [page, pagesize, pokemonWithStatus]);
+
   function getGridWidth(container) {
     setGridWidth(Math.floor(container / 6));
   }
 
-  function getCurrentPokemon() {
-    if (page * pagesize > pokemon.length)
-      return pokemon.slice((page - 1) * pagesize);
-    return pokemon.slice((page - 1) * pagesize, page * pagesize);
+  function updatePokemonLoadStatus(pokemonId) {
+    setPokemonWithStatus(prev => {
+      const newState = prev.map(poke =>
+        poke.id === pokemonId ? { ...poke, loaded: true } : poke,
+      );
+      const currentStart = (page - 1) * pagesize;
+      const currentEnd = Math.min(page * pagesize, newState.length);
+      const currentPagePokemon = newState.slice(currentStart, currentEnd);
+      const allLoaded = currentPagePokemon.every(poke => poke.loaded === true);
+      setLoaded(allLoaded);
+      return newState;
+    });
   }
 
   function incrementPage() {
-    if (page * pagesize < pokemon.length) setPage(page => page + 1);
+    if (page * pagesize < pokemon.length) {
+      setPage(page => page + 1);
+      setLoaded(false);
+    }
   }
 
   function decrementPage() {
-    if (page - 1 > 0) setPage(page => page - 1);
+    if (page - 1 > 0) {
+      setPage(page => page - 1);
+      setLoaded(false);
+    }
   }
 
   return (
@@ -41,6 +76,7 @@ export default function PokemonGrid({ pokemon, gridClick, pagesize = 36 }) {
             width={gridWidth}
             gridClick={gridClick}
             pokemon={poke}
+            loadCallback={updatePokemonLoadStatus}
           />
         ))}
       </div>
