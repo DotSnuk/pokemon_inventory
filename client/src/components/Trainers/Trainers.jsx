@@ -31,7 +31,6 @@ export default function Trainer() {
 
   return (
     <>
-      <img src='/placeholder/cat.png' alt='' />
       <div className={styles.container}>{trainerCards}</div>
     </>
   );
