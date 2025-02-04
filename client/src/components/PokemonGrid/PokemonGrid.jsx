@@ -10,8 +10,6 @@ export default function PokemonGrid({ pokemon, gridClick, pagesize = 36 }) {
   const [gridWidth, setGridWidth] = useState(0);
   const { loaded, setLoaded } = useLoadedContext();
 
-  console.log(loaded);
-
   useEffect(() => {
     if (containerRef.current !== null)
       getGridWidth(containerRef.current.offsetWidth);
@@ -24,6 +22,17 @@ export default function PokemonGrid({ pokemon, gridClick, pagesize = 36 }) {
     }));
     setPokemonWithStatus(initialPokemonWithStatus);
   }, [pokemon]);
+
+  useEffect(() => {
+    const currentStart = (page - 1) * pagesize;
+    const currentEnd = Math.min(page * pagesize, pokemonWithStatus.length);
+    const currentPagePokemon = pokemonWithStatus.slice(
+      currentStart,
+      currentEnd,
+    );
+    const allLoaded = currentPagePokemon.every(poke => poke.loaded === true);
+    setLoaded(allLoaded);
+  }, [pokemonWithStatus, page, pagesize]);
 
   const currentPokemon = useMemo(() => {
     if (pokemonWithStatus.length === 0) return [];
@@ -44,11 +53,7 @@ export default function PokemonGrid({ pokemon, gridClick, pagesize = 36 }) {
       const newState = prev.map(poke =>
         poke.id === pokemonId ? { ...poke, loaded: true } : poke,
       );
-      const currentStart = (page - 1) * pagesize;
-      const currentEnd = Math.min(page * pagesize, newState.length);
-      const currentPagePokemon = newState.slice(currentStart, currentEnd);
-      const allLoaded = currentPagePokemon.every(poke => poke.loaded === true);
-      setLoaded(allLoaded);
+
       return newState;
     });
   }

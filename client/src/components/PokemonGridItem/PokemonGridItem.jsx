@@ -7,7 +7,6 @@ export default function PokemonGridItem({
   pokemon,
   width,
   gridClick,
-  checkAllLoaded,
   loadCallback,
 }) {
   const { loaded } = useLoadedContext();
@@ -18,24 +17,34 @@ export default function PokemonGridItem({
       className={styles.item}
       onClick={() => gridClick(pokemon)}
     >
-      <LoaderWithClass />
+      <LoaderWithClass width={width} />
       <img
         style={{ display: loaded ? 'block' : 'none' }}
-        src={pokemon.img_url}
+        src={pokemon.img_url ? pokemon.img_url : getPlaceholderSrc()}
         onLoad={() => loadCallback(pokemon.id)}
+        onError={() => console.log('error loading image')}
         alt={pokemon.name}
       />
     </div>
   );
 }
 
-function LoaderWithClass() {
+function getPlaceholderSrc() {
+  return '/placeholder/cat.png';
+}
+
+function LoaderWithClass({ width }) {
   const { loaded } = useLoadedContext();
 
   return (
-    <LoaderPinwheel
-      className={styles.spinning}
-      style={{ display: loaded ? 'none' : 'block' }}
-    />
+    <div
+      style={{
+        '--grid-width': width + 'px',
+        display: loaded ? 'none' : 'flex',
+      }}
+      className={styles.wrapper}
+    >
+      <LoaderPinwheel className={styles.spinning} size={width / 4} />
+    </div>
   );
 }

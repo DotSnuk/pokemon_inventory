@@ -10,6 +10,9 @@ img {
   width: 100%;
 }
 .spinning {
+  justify-content: center;
+  margin: auto;
+  align-self: center;
   animation: 3.5s spin infinite linear;
 }
 
@@ -20,4 +23,11 @@ img {
   to {
     transform: rotate(359deg);
   }
+}
+
+.wrapper {
+  display: flex;
+  box-sizing: border-box;
+  flex-basis: var(--grid-width);
+  aspect-ratio: 1 / 1;
 }

@@ -16,6 +16,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: path => path.replace(/^\/avatar/, ''),
       },
+      '/placeholder': {
+        target: 'http://localhost:3000/placeholder',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/placeholder/, ''),
+      },
     },
   },
 });
